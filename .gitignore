@@ -2,4 +2,4 @@ notes.txt
 ./c/a.out
 ./ccls-cache
 ./c/erato
-./sml/lib
+./sml/lib/*
