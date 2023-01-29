@@ -1,27 +1,20 @@
+structure STSeq: ST_SEQUENCE = MkSTSequence (structure Seq = ArraySequence)
+structure Seq = ArraySequence
+
 fun erato top =
   let
-    fun listGen 0 = []
-      | listGen n = true::(listGen (n-1))
-
-    fun setList (L, v, n) = 
-      let
-        val l1 = List.take(L, n)
-        val x::l2 = List.drop(L, n)
-      in
-        l1@(v::l2)
-      end
-
+    val res = ref (STSeq.fromSeq (Seq.tabulate (fn i => true) top))
+    
     fun removeMuls p l =
       let
         val counter' = ref (p*p)
       in
         while (!counter') < top do (
-          l := setList (!l, false, !counter');
+          l := STSeq.update (!l, (!counter', false));
           counter' := !counter' + p
         )
       end
 
-    val res = ref (listGen top)
     val counter = ref 2
     
     val startTime = Time.now()
@@ -33,8 +26,6 @@ fun erato top =
     );
 
     val endTime = Time.now()
-    val out = List.drop(!res, 1)
-
-  in
+ in
     Time.toReal (Time.-(endTime, startTime))
   end
